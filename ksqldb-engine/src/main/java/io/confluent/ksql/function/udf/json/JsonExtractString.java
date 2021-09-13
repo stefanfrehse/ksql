@@ -37,8 +37,6 @@ public class JsonExtractString {
 
   private static final ObjectReader OBJECT_READER = UdfJsonMapper.INSTANCE.get().reader();
 
-  private List<String> tokens = null;
-
   @Udf
   public String extract(
       @UdfParameter(description = "The input JSON string") final String input,
@@ -48,10 +46,10 @@ public class JsonExtractString {
       return null;
     }
 
-    if (tokens == null) {
-      final JsonPathTokenizer tokenizer = new JsonPathTokenizer(path);
-      tokens = ImmutableList.copyOf(tokenizer);
-    }
+
+    final JsonPathTokenizer tokenizer = new JsonPathTokenizer(path);
+    final List<String> tokens = ImmutableList.copyOf(tokenizer);
+
 
     JsonNode currentNode = parseJsonDoc(input);
     for (final String token : tokens) {
